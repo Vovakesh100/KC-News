@@ -260,3 +260,9 @@ const data = {
 		},
 	],
 };
+
+const mainNews = data.items.slice(0, 3);
+const smallNews = data.items.slice(3);
+
+console.log(mainNews);
+console.log(smallNews);

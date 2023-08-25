@@ -143,7 +143,8 @@ body {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
+	overflow: clip;
+	overflow-clip-margin: content-box;
 }
 
 .main-article__category {

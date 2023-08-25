@@ -261,8 +261,126 @@ const data = {
 	],
 };
 
-const mainNews = data.items.slice(0, 3);
-const smallNews = data.items.slice(3);
+const mainNews = data.items.slice(10, 14);
+const smallNews = data.items.slice(5, 17);
 
-console.log(mainNews);
-console.log(smallNews);
+const mainNewsContainer = document.querySelector('.articles__big-column');
+const smallNewsContainer = document.querySelector('.articles__small-column');
+
+// <article class='main-article'>
+// 	<div class='main-article__image-container'>
+// 		<img
+// 			class='main-article__image'
+// 			src='./images/image.jpg'
+// 			alt='Фото новости'
+// 		/>
+// 	</div>
+// 	<div class='main-article__content'>
+// 		<span class='article-category main-article__category'>Технологии</span>
+// 		<h2 class='main-article__title'>
+// 			Вещи, которые нужно знать перед стажировкой в IT сфере
+// 		</h2>
+// 		<p class='main-article__text'>
+// 			Уличные музыканты продолжают радовать фанатов стрит арта. Для этого они
+// 			исполняют привычные мелодии в новом формате!
+// 		</p>
+// 		<span class='article-source main-article__source'>Источник</span>
+// 	</div>
+// </article>;
+
+// <article class='small-article'>
+// 	<h2 class='small-article__title'>
+// 		Благотворительный забег с собаками: чем заняться на выходных в Москве
+// 	</h2>
+// 	<p class='small-article__caption'>
+// 		<span class='article-date small-article__date'>10 июля</span>
+// 		<span class='article-source small-article__source'>Источник</span>
+// 	</p>
+// </article>;
+
+const createMainNewsItem = item => {
+	const categoryData = data.categories.find(
+		categoryItem => categoryItem.id === item.category_id
+	);
+	const sourceData = data.sources.find(
+		sourceItem => sourceItem.id === item.source_id
+	);
+
+	const article = document.createElement('article');
+	const imageContainer = document.createElement('div');
+	const image = document.createElement('img');
+	const content = document.createElement('div');
+	const category = document.createElement('span');
+	const title = document.createElement('h2');
+	const text = document.createElement('p');
+	const source = document.createElement('span');
+
+	article.classList.add('main-article');
+	imageContainer.classList.add('main-article__image-container');
+	image.classList.add('main-article__image');
+	content.classList.add('main-article__content');
+	category.classList.add('article-category', 'main-article__category');
+	title.classList.add('main-article__title');
+	text.classList.add('main-article__text');
+	source.classList.add('article-source', 'main-article__source');
+
+	title.textContent = item.title;
+	image.src = item.image;
+	category.textContent = categoryData.name;
+	text.textContent = item.description;
+	source.textContent = sourceData.name;
+
+	imageContainer.appendChild(image);
+	article.appendChild(imageContainer);
+	content.appendChild(category);
+	content.appendChild(title);
+	content.appendChild(text);
+	content.appendChild(source);
+	article.appendChild(content);
+	return article;
+};
+
+const createSmallNewsItem = item => {
+	const sourceData = data.sources.find(
+		sourceItem => sourceItem.id === item.source_id
+	);
+	const dateData = new Date(item.date).toLocaleDateString('ru-RU', {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	});
+
+	const article = document.createElement('article');
+	const title = document.createElement('h2');
+	const textContainer = document.createElement('p');
+	const source = document.createElement('span');
+	const date = document.createElement('span');
+
+	article.classList.add('small-article');
+	title.classList.add('small-article__title');
+	textContainer.classList.add('small-article__caption');
+	date.classList.add('article-date', 'small-article__date');
+	source.classList.add('article-source', 'small-article__source');
+
+	title.textContent = item.title;
+	source.textContent = sourceData.name;
+	date.textContent = dateData;
+
+	textContainer.appendChild(date);
+	textContainer.appendChild(source);
+	article.appendChild(title);
+	article.appendChild(textContainer);
+
+	return article;
+};
+
+mainNews.forEach(item => {
+	const div = document.createElement('div');
+	div.innerHTML = item.title;
+
+	mainNewsContainer.appendChild(createMainNewsItem(item));
+});
+
+smallNews.forEach(item => {
+	smallNewsContainer.appendChild(createSmallNewsItem(item));
+});
